@@ -3,15 +3,20 @@ import random
 import string
 
 class User:
+    # Class variable shared by all instances
     user_id = 123_000
     def __init__(self, full_name, address, mobile_number, email, password= None):
+        # Increment the class-level user_id
         User.user_id += 1
+        # Assign the incremented value to the instance
+        self.user_id = User.user_id
         self.full_name = full_name
         self.address = address
         self.mobile_number = mobile_number      
         self.email = email
         self.password = password or self.generate_password()
-        
+
+    @classmethod    
     def generate_password(self):
         length = 12
         characters = string.ascii_letters + string.digits + string.punctuation
@@ -32,7 +37,12 @@ class User:
                 with open(path, mode='w', newline='') as csv_file:
                     csv_writer = csv.DictWriter(csv_file, fieldnames=headers, delimiter=',')
                     csv_writer.writeheader()
-                    print(f"CSV file '{path}' created successfully with headers: {headers}")
+                    # these 4 rows to make print in a more readable way.
+                    print(f"CSV file '{path}' created successfully with headers:\n")
+                    for key in headers.keys():
+                        print (key)
+                    print("\n" + "-"*30 + "\n")
+
                     return True
             else:
                 raise ValueError(f"[i] Bad value path = {path}")                   
@@ -68,8 +78,16 @@ class User:
                     
                     # Write each line to the CSV file
                     csv_writer.writerows(lines)
-                    print(f"CSV file '{path}' added successfully with lines: {lines}")
-                    return True
+                    #print(f"CSV file '{path}' added successfully with lines: {lines}")
+                # Print each line (dictionary) in user_lines on a new line
+                for index, line in enumerate(user_lines, start=1):
+                    print(f"User {index}:")
+                    for key, value in line.items():
+                        print(f"  {key}: {value}")
+                    # Add a separator between users
+                    print("\n" + "-"*30 + "\n")  
+
+                return True
                 
             except Exception as error:
                 raise error
@@ -93,10 +111,11 @@ user2 = User("Michael Brown", "321 Birch Rd, Seattle, WA 98101", "123-789-4561",
 user_lines=[user1.to_dict(),user2.to_dict()]
 
 # Generate a random password
-print(f"Generated password: {user1.generate_password()}")
+print(f"Generated password: {User.generate_password()}")
 
 # Create a CSV file
 User.create_csv_file(path="users.csv", headers={"full_name":"","address":"","mobile_number":"","email":"","password":""})
 User.add_lines_at_end(path="users.csv",
                       headers={"full_name":"","address":"","mobile_number":"","email":"","password":""},
                       lines=user_lines)
+print(user1.user_id)
