@@ -1,10 +1,83 @@
+from user import User
+from corporate import Corporate
+
 class Main_Control_Panel:
-    def main(self):
-        # Create new User objects and add them to the system
-        print("===== Adding Users =====")
-        print(self.add_user("U001", "Alice Johnson", "123 Main St", "1234567890", "alice@example.com"))
-        print(self.add_user("U002", "Bob Smith", "456 Oak St", "0987654321", "bob@example.com"))
+    def __init__(self,User) -> None:
+        self.User=User
+   
 
+def display_menu():
+        """Display the Operations for the Logistics System."""
+        print("""
+        ****** Main Control Panel ******
+        1. Add/remove/update a user in the system
+        2. Add/remove/update a corporate customer
+        3. Add/remove/update a private customer
+        4. Add a bike to the system
+        5. Add a truck to the system
+        6. Add a ship to the system
+        7. Create a shipment/order
+        8. Add items to a shipment
+        9. Update the status of an order
+        10. Retrieve the updated status of an order
+        *********************************
+        """)
+def main():
+    # Change the variable name from 'Main_Control_Panel' to 'control_panel'
+    # Create an instance of the Main_Control_Panel class
+    #control_panel = Main_Control_Panel()
 
-if __name__ == "__main":
-    Main_Control_Panel().main()
+    while True:
+        display_menu()
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            # Add user
+            #user1 = User(full_name="Alice Johnson", address="123 Elm St, Springfield, IL 62704",mobile_number="832-456-1234", email="alice@example.com")
+            
+            #user2 = User(full_name="Michael Brown", address="321 Birch Rd, Seattle, WA 98101",mobile_number="123-789-4561", email="m.brown@example.com")
+            action = input("(a)dd, (r)emove or (u)pdate user?")
+            
+            user1 = User("Alice Johnson",  "123 Elm St, Springfield, IL 62704",
+             "832-456-1234", "alice@example.com")
+            user2 = User("Michael Brown", "321 Birch Rd, Seattle, WA 98101", "123-789-4561", "m.brown@example.com")
+
+            User.init_db("users.csv")  # Initialize user database
+            user_lines=[user1.to_dict(),user2.to_dict()]
+            User.add_lines_at_end(path="users.csv",
+                      headers={"full_name":"","address":"","mobile_number":"","email":"","password":""},
+                      lines=user_lines)
+        elif choice == '2':
+                # Add corporate customer
+            corporate1 = Corporate(
+            customer_id="C001",  
+            company_name="Tech Solutions Ltd.", 
+            company_address="456 Pine St, San Francisco, CA 94111",
+            reference_person="John Doe", 
+            reference_contact="415-789-4567", 
+            invoice_email="billing@techsolutions.com",
+            related_users="john@example.com"
+        )
+            Corporate.init_db("corporate.csv")
+            corporate1.save_to_csv(path="corporate.csv")
+            corporate1.read_csv_file()
+            
+        elif choice == '3':
+            pass
+            
+
+        elif choice == '4':
+            pass
+
+        elif choice == '5':
+            pass
+        elif choice == '6':
+            pass
+        elif choice == '7':
+            pass
+
+        else:
+            print("Invalid choice. Try again.")
+
+if __name__ == "__main__":
+    main()
