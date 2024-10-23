@@ -1,11 +1,6 @@
 from user import User
 from corporate import Corporate
-
-class Main_Control_Panel:
-    def __init__(self,User) -> None:
-        self.User=User
    
-
 def display_menu():
         """Display the Operations for the Logistics System."""
         print("""
@@ -22,6 +17,34 @@ def display_menu():
         10. Retrieve the updated status of an order
         *********************************
         """)
+
+def add_remove_update_user(action=None, name=None, address=None, phone=None, email=None):
+    #user1 = User(full_name="Alice Johnson", address="123 Elm St, Springfield, IL 62704",mobile_number="832-456-1234", email="alice@example.com")
+    
+    #user2 = User(full_name="Michael Brown", address="321 Birch Rd, Seattle, WA 98101",mobile_number="123-789-4561", email="m.brown@example.com")
+    if action is None:
+        action = input("(a)dd, (r)emove or (u)pdate user?")
+    
+    if name is None:
+        name = input("Enter user name:")
+    if address is None:
+        address = input("Enter user address:")
+    if phone is None:
+        phone = input("Enter user phone number:")
+    if email is None:
+        email = input("Enter user email:")
+        
+#    user1 = User("Alice Johnson",  "123 Elm St, Springfield, IL 62704",
+ #       "832-456-1234", "alice@example.com")
+ #   user2 = User("Michael Brown", "321 Birch Rd, Seattle, WA 98101", "123-789-4561", "m.brown@example.com")
+    user = User(name, address, phone, email)
+    user.save_users_to_csv([user],"users.csv")
+    #User.init_db("users.csv")  # Initialize user database
+    #user_lines=[user1.to_dict(),user2.to_dict()]
+    #User.add_lines_at_end(path="users.csv",
+    #            headers={"full_name":"","address":"","mobile_number":"","email":"","password":""},
+    #            lines=[user])
+
 def main():
     # Change the variable name from 'Main_Control_Panel' to 'control_panel'
     # Create an instance of the Main_Control_Panel class
@@ -33,20 +56,7 @@ def main():
 
         if choice == '1':
             # Add user
-            #user1 = User(full_name="Alice Johnson", address="123 Elm St, Springfield, IL 62704",mobile_number="832-456-1234", email="alice@example.com")
-            
-            #user2 = User(full_name="Michael Brown", address="321 Birch Rd, Seattle, WA 98101",mobile_number="123-789-4561", email="m.brown@example.com")
-            action = input("(a)dd, (r)emove or (u)pdate user?")
-            
-            user1 = User("Alice Johnson",  "123 Elm St, Springfield, IL 62704",
-             "832-456-1234", "alice@example.com")
-            user2 = User("Michael Brown", "321 Birch Rd, Seattle, WA 98101", "123-789-4561", "m.brown@example.com")
-
-            User.init_db("users.csv")  # Initialize user database
-            user_lines=[user1.to_dict(),user2.to_dict()]
-            User.add_lines_at_end(path="users.csv",
-                      headers={"full_name":"","address":"","mobile_number":"","email":"","password":""},
-                      lines=user_lines)
+            add_remove_update_user()
         elif choice == '2':
                 # Add corporate customer
             corporate1 = Corporate(

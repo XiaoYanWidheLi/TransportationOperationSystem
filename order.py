@@ -1,26 +1,32 @@
-class Order:
+from datetime import datetime
+import csv
 
-    def __init__(self, order_id, priority, customer, delivery_location, payment_details, items, order_date, delivery_date, vehicle=None, order_status="Processing", order_db="orders.csv"):
-        
-        self.order_id = order_id
+class Order:
+    """
+    Generate oreder_id based on Date and Counter,making it more traceable.
+    """
+    current_time = datetime.now().strftime("%Y%m%d")
+    order_counter = 1
+
+    def __init__(self, priority, customer, delivery_location, payment_details, order_status="Processing"):
+        today = datetime.now().strftime("%Y%m%d")
+        if Order.current_time != today:
+            Order.current_time = today
+            Order.order_counter = 1
+        # Generate the order ID
+        self.order_id = f"ORD-{today}{Order.order_counter:4d}"
+        self.order_counter += 1
+
         self.priority = priority
         self.customer = customer
         self.delivery_location = delivery_location
         self.payment_details = payment_details
-        self.items = items
-        self.total_weight = self.calculate_total_weight()
+        self.items = []
+        self.total_weight = 0
         self.order_status = order_status
-        self.order_date = order_date
-        self.delivery_date = delivery_date
-        self.vehicle = vehicle
-        self.order_db = order_db
-
-    def calculate_total_weight(self):
-        """
-        Calculate the total weight of all items in the order.
-        Returns the total weight in kg.
-        """
-        return sum(item['weight'] for item in self.items)
+        self.order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.delivery_date = None
+        self.vehicle = None
 
     def update_status(self, new_status):
         """
@@ -30,18 +36,19 @@ class Order:
         valid_statuses = ["Delivered", "Processing", "Canceled"]
         if new_status in valid_statuses:
             self.order_status = new_status
-            print(f"Order status updated to '{new_status}'.")
+            print(f"Order {self.order_id} status updated to '{self.order_status}'.")
         else:
-            print("Invalid status. Please choose from 'Delivered', 'Processing', or 'Canceled'.")
+            raise ValueError(f"Invalid status. Please choose from {valid_statuses}.")
 
-    def assign_vehicle(self, vehicle):
+    def get_status(self):
         """
-        Assign a vehicle to the order.
-        - vehicle: A Vehicle object to be assigned to this order.
+        Retrieve the current status of the order.
         """
-        self.vehicle = vehicle
-        print(f"Vehicle '{vehicle.vehicle_id}' assigned to the order.")
+        return self.order_status
 
+    def add_items(self, item):
+        self.items.append(item)
+        self.total_weight += item.weight
     def save_to_csv(self):
         """
         Save the order details to a CSV file.
@@ -81,15 +88,6 @@ class Order:
                 f"Delivery Date: {self.delivery_date}\n"
                 f"Vehicle: {vehicle_info}\n")
 
-# Example usage
-# Assume Location, PaymentDetails, and Vehicle classes are defined as per the previous examples.
-from datetime import datetime
-
-# Example location, payment, and vehicle objects
-delivery_location = Location(city="Stockholm", country="Sweden")
-payment_details = PaymentDetails(payment_method="Credit Card", transaction_id="TXN12345", amount="200 €", payment_status="Paid", card_information={'card_number': '1234567812345678', 'cardholder_name': 'John Doe'})
-vehicle = Vehicle(vehicle_id="Truck001", vehicle_type="truck", current_position=delivery_location, vehicle_db="vehicle_db.csv")
-
 # List of items for the order
 items = [
     {'name': 'Laptop', 'weight': 2},
@@ -98,5 +96,14 @@ items = [
 ]
 
 # Create an order
-order = Order(
-   
+order = Order(priority="Medium", customer="Alice Smith", delivery_location="456 Oak Ave",
+              payment_details="PayPal")
+
+# Print initial status
+print(f"Initial Order Status: {order.get_status()}")  # Output: Initial Order Status: Processing
+
+# Update the order status to Delivered
+order.update_status("Delivered")
+
+# Retrieve the updated status
+print(f"Updated Order Status: {order.get_status()}")  # Output: Updated Order Status: Delivered

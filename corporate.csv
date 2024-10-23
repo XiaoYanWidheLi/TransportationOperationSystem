@@ -1,0 +1,2 @@
+customer_id,company_name,company_address,reference_person,reference_contact,invoice_email,related_users,customer_db
+C002,Tourism Innovations Ltd.,"456 Pine St, San Francisco, CA 94111",John Doe,415-789-4567,billing@techinnovations.com,['john@example.com'],corporate.csv

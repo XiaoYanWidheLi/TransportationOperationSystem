@@ -24,7 +24,7 @@ class User:
     """
 
     # Class variable shared by all instances
-    user_id = 123_000
+    user_id = 200_000
     def __init__(self, full_name, address, mobile_number, email, password= None):
         """
         Initialize a new User instance and auto-increment user_id for each new user.

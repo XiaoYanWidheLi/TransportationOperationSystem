@@ -18,13 +18,6 @@ class PaymentDetails:
         self.card_information = card_information
         self.payment_db = payment_db
 
-    def transaction_id(self):
-        pass
-
-    def amount(self):
-        # In € or SEK
-        pass
-
     def payment_method(self, method):
         """
         Set or update the payment method.
@@ -36,7 +29,6 @@ class PaymentDetails:
             print(f"Payment method set to '{method}'.")
         else:
             raise ValueError(f"Invalid payment method '{method}'. Choose from {allowed_methods}.")
-
 
     def payment_status(self, new_status):
         """
@@ -60,22 +52,3 @@ class PaymentDetails:
             return f"Cardholder: {cardholder_name}, Card Number: {masked_card}"
         else:
             return "No card information available."
-
-    def payment_db(self):
-        """
-        Save the payment details to a CSV file.
-        """
-        # Prepare the data to be written to the CSV
-        data = [
-            self.payment_method,
-            self.transaction_id,
-            self.amount,
-            self.payment_status,
-            self.display_card_info() if self.card_information else "N/A"
-        ]
-
-        # Write to CSV
-        with open(self.payment_db, mode='a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(data)
-        print(f"Payment details for Transaction ID {self.transaction_id} saved to {self.payment_db}.")
