@@ -1,0 +1,2 @@
+customer_id,reference_person,reference_contact,invoice_email,related_users,customer_db
+CUST002,Jane Smith,"{'mobile': '987-654-3210', 'email': 'jane.smith@example.com'}",invoices@smith.com,200003,private_customers.csv

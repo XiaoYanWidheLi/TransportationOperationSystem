@@ -1,0 +1,4 @@
+vehicle_id,vehicle_type,status,current_location
+SH001,Ship,available,"London, Uk"
+SH002,Ship,available,"Liverpool, Uk"
+SH003,Ship,available,"New York, USA"

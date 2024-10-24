@@ -1,0 +1,4 @@
+vehicle_id,vehicle_type,status,current_location
+T001,Truck,available,"Beijing, Kina"
+T002,Truck,available,"Shanghai, Kina"
+T003,Truck,available,"Chengdu, Kina"

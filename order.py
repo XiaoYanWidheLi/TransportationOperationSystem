@@ -14,7 +14,7 @@ class Order:
             Order.current_time = today
             Order.order_counter = 1
         # Generate the order ID
-        self.order_id = f"ORD-{today}{Order.order_counter:4d}"
+        self.order_id = f"ORD-{today}-{Order.order_counter:04d}"
         self.order_counter += 1
 
         self.priority = priority
@@ -24,7 +24,7 @@ class Order:
         self.items = []
         self.total_weight = 0
         self.order_status = order_status
-        self.order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         self.delivery_date = None
         self.vehicle = None
 
@@ -48,30 +48,40 @@ class Order:
 
     def add_items(self, item):
         self.items.append(item)
-        self.total_weight += item.weight
-    def save_to_csv(self):
+        self.total_weight += item['weight']
+        print(f"Item {item['name']} was added with weight {item['weight']}.")
+
+    def to_dict(self):
+        return{
+            "order_id" : self.order_id,
+            "priority" : self.priority,
+            "customer" : self.customer,
+            "delivery_location" : self.delivery_location,
+            "payment_details" : self.payment_details,
+            "items" : self.items,
+            "total_weight" : self.total_weight,
+            "order_status" : self.order_status,
+            "order_date" : self.order_date, 
+            "delivery_date" : self.delivery_date,
+            "vehicle" : self.vehicle
+        }
+
+    def save_to_csv(self,path:str,orders:list):
         """
         Save the order details to a CSV file.
         """
-        # Prepare the data to be written to the CSV
-        data = [
-            self.order_id,
-            self.priority,
-            self.customer,
-            str(self.delivery_location),
-            self.payment_details.transaction_id if self.payment_details else "N/A",
-            self.total_weight,
-            self.order_status,
-            self.order_date.strftime("%Y-%m-%d %H:%M:%S"),
-            self.delivery_date.strftime("%Y-%m-%d %H:%M:%S"),
-            self.vehicle.vehicle_id if self.vehicle else "N/A"
-        ]
-
         # Write to CSV
-        with open(self.order_db, mode='a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(data)
-        print(f"Order {self.order_id} saved to {self.order_db}.")
+        with open(path, mode='w', newline='') as file:
+            writer = csv.DictWriter(file,fieldnames=["order_id", "priority", "customer",
+                                                 "delivery_location", "payment_details",
+                                                 "items", "total_weight", "order_status",
+                                                "order_date", "delivery_date", "vehicle"])
+            writer.writeheader()
+            
+            for row in orders:
+                print(row.to_dict())
+                writer.writerow(row.to_dict())
+        print(f"Order {self.order_id} be added.")
 
     def __str__(self):
         """
@@ -82,28 +92,10 @@ class Order:
                 f"Priority: {self.priority}\n"
                 f"Customer: {self.customer}\n"
                 f"Delivery Location: {self.delivery_location}\n"
+                f"Items: {self.items}\n"
                 f"Total Weight: {self.total_weight} kg\n"
                 f"Order Status: {self.order_status}\n"
                 f"Order Date: {self.order_date}\n"
                 f"Delivery Date: {self.delivery_date}\n"
                 f"Vehicle: {vehicle_info}\n")
-
-# List of items for the order
-items = [
-    {'name': 'Laptop', 'weight': 2},
-    {'name': 'Monitor', 'weight': 7},
-    {'name': 'Keyboard', 'weight': 1}
-]
-
-# Create an order
-order = Order(priority="Medium", customer="Alice Smith", delivery_location="456 Oak Ave",
-              payment_details="PayPal")
-
-# Print initial status
-print(f"Initial Order Status: {order.get_status()}")  # Output: Initial Order Status: Processing
-
-# Update the order status to Delivered
-order.update_status("Delivered")
-
-# Retrieve the updated status
-print(f"Updated Order Status: {order.get_status()}")  # Output: Updated Order Status: Delivered
+    

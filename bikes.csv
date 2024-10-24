@@ -1,0 +1,4 @@
+vehicle_id,vehicle_type,status,current_location
+B001,Bike,available,"goteborg, Sweden"
+B002,Bike,available,"malmo, Sweden"
+B003,Bike,available,"stockholm, Sweden"

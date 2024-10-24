@@ -129,53 +129,13 @@ class Vehicle:
                 print(f"{vehicle.vehicle_type} with ID {vehicle.vehicle_id} be added to system succesfully.")
 
 
-"""
-     Vehicle Selection Task (40 points):
-     Create a function to select the correct and available vehicle for a shipment.
-     Test it with the following scenarios:
-     • Shipment 1: 1 item, total weight 5 kg
-     • Shipment 2: 12 items, total weight 3 kg
-     • Shipment 3: 60 items, total weight 4,500 kg
-     • Shipment 4: 120 items, total weight 2,500 kg"""
-
-# Vehicle selection
-Vehicle.vehicle_selection(1,5)
-Vehicle.vehicle_selection(12,3)
-Vehicle.vehicle_selection(60,4500)
-Vehicle.vehicle_selection(120,2500)
-
-# Add a bike to the system
-bike_1 = Vehicle(vehicle_type="Bike", status = "available",current_location= "goteborg, Sweden")
-bike_2 = Vehicle(vehicle_type="Bike", status="available", current_location="malmo, Sweden")
-bike_3 = Vehicle(vehicle_type="Bike", status="available", current_location="stockholm, Sweden")
-# Add a truck to the system. 
-truck_1 = Vehicle(vehicle_type="Truck", status = "available", current_location= "Beijing, Kina")
-truck_2 = Vehicle(vehicle_type="Truck", status="available", current_location="Shanghai, Kina")
-truck_3 = Vehicle(vehicle_type="Truck", status="available", current_location="Chengdu, Kina")
-# Add a ship to the system. 
-ship_1 = Vehicle(vehicle_type="Ship", status= "available", current_location= "London, Uk")
-ship_2 = Vehicle(vehicle_type="Ship", status="available", current_location="Liverpool, Uk")
-ship_3 = Vehicle(vehicle_type="Ship", status="available", current_location="New York, USA")
-
-# Load items onto a vehicle.
-bike_1.load_items(1,5)
-bike_1.load_items(2,7)
-# check remaining capacity.
-bike_1.remaining_capacity()
-
-# Print the vehicle IDs to verify they are generated correctly
-print(bike_1.vehicle_id)      
-print(bike_2.vehicle_id)  
-print(bike_3.vehicle_id)  
-
-print(truck_1.vehicle_id) 
-print(truck_2.vehicle_id) 
-print(truck_3.vehicle_id)  
-
-print(ship_1.vehicle_id) 
-print(ship_2.vehicle_id) 
-print(ship_3.vehicle_id)
 
 
-Vehicle.save_to_csv([bike_1,bike_2], "vehicles.csv")
+ 
+
+ 
+
+
+
+
 

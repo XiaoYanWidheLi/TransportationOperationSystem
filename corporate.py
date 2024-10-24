@@ -66,6 +66,8 @@ class Corporate:
             ])
             for corporate in corporates:
                 csv_writer.writerow(corporate.__dict__)
+            print(f"Corporates has been added successfully.")
+
 
     @staticmethod
     def read_csv_file(path: str):
@@ -77,7 +79,8 @@ class Corporate:
             print("Opening the file...")
             with open(path, "r", encoding="utf-8") as file:
                 csv_reader = csv.reader(file, delimiter=",")
-                header = next(csv_reader, None)  # Read header
+                # Read header
+                header = next(csv_reader, None)  
                 print(f"Header: {header}")
                 print("Reading rows...")
                 for row in csv_reader:

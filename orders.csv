@@ -1,0 +1,2 @@
+order_id,priority,customer,delivery_location,payment_details,items,total_weight,order_status,order_date,delivery_date,vehicle
+ORD-20241024-0001,Medium,Alice Smith,456 Oak Ave,PayPal,"[{'name': 'Laptop', 'weight': 2}, {'name': 'Monitor', 'weight': 7}, {'name': 'Keyboard', 'weight': 1}]",10,Processing,"('2024-10-24 20:03:06',)",,

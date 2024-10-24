@@ -1,20 +1,29 @@
 import csv
-class PrivateCustormer:
+
+class PrivateCustomer:
     def __init__(self, customer_id, reference_person, reference_contact, 
                  invoice_email, related_users=None, customer_db="private_customers.csv") -> None:
-        self.customer_id = customer_id  # Unique identifier (e.g., organizational number or VAT number)
-        self.reference_person = reference_person  # Full name of reference person
-        self.reference_contact = reference_contact  # Contact info as a dict {'mobile': '', 'email': ''}
-        self.invoice_email = invoice_email  # Email address for invoices
-        self.related_users = related_users if related_users else []  # List of user IDs
-        self.customer_db = customer_db  # Path to CSV file for storing customer data
+        self.customer_id = customer_id  
+        self.reference_person = reference_person  
+        self.reference_contact = reference_contact  
+        self.invoice_email = invoice_email  
+        self.related_users = related_users if related_users else [] 
+        self.customer_db = customer_db  
+
+    def to_dict(self):
+        """ Convert the customer data to a dictionary format for CSV writing. """
+        return {
+            "customer_id": self.customer_id,
+            "reference_person": self.reference_person,
+            "reference_contact": str(self.reference_contact),
+            "invoice_email": self.invoice_email,
+            "related_users": ",".join(self.related_users),
+            "customer_db": self.customer_db
+        }
 
     @staticmethod
     def init_db(path: str):
-        """
-        Initialize the CSV file with headers.
-
-        """
+        """ Initialize the CSV file with headers. """
         with open(path, "w", newline="") as output_db:
             csv_writer = csv.writer(output_db)
             csv_writer.writerow([
@@ -24,32 +33,27 @@ class PrivateCustormer:
 
     @staticmethod
     def save_to_csv(private_customers, path: str):
-        """
-        Save multiple private customer objects to the CSV file.
-
-        """
+        """ Save multiple private customer objects to the CSV file. """
         with open(path, "a", newline="") as file:
             csv_writer = csv.DictWriter(file, fieldnames=[
                 "customer_id", "reference_person", "reference_contact", 
                 "invoice_email", "related_users", "customer_db"
             ])
+            if file.tell() == 0:
+                csv_writer.writeheader()
             for private_customer in private_customers:
-                csv_writer.writerow(PrivateCustormer.__dict__)
+                csv_writer.writerow(private_customer.to_dict())
+                print(f"Customer {private_customer.customer_id} {private_customer.reference_person} added successfully.")
 
     @staticmethod
     def read_csv_file(path: str):
-        """
-        Read and print the contents of the CSV file.
-
-        """
+        """ Read and print the contents of the CSV file. """
         try:
             print("Opening the file...")
             with open(path, "r", encoding="utf-8") as file:
                 csv_reader = csv.reader(file, delimiter=",")
-                # Read header
                 header = next(csv_reader, None)  
                 print(f"Header: {header}")
-                print("Reading rows...")
                 for row in csv_reader:
                     print(f"Row: {row}")
                 print("Done reading rows.")
@@ -58,10 +62,7 @@ class PrivateCustormer:
 
     @staticmethod
     def remove_from_csv(path: str, customer_id: str):
-        """
-        Remove a specific private customer entry from the CSV file based on customer_id.
-
-        """
+        """ Remove a specific private customer entry from the CSV file based on customer_id. """
         try:
             with open(path, "r") as file:
                 csv_reader = csv.DictReader(file)
@@ -83,10 +84,7 @@ class PrivateCustormer:
 
     @staticmethod
     def update_csv(path: str, customer_id: str, updated_data: dict):
-        """
-        Update a specific private customer entry in the CSV file based on customer_id.
-
-        """
+        """ Update a specific private customer entry in the CSV file based on customer_id. """
         try:
             with open(path, "r", newline="") as f:
                 rows = list(csv.DictReader(f))
